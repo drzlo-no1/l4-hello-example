@@ -28,7 +28,7 @@ static int manual_syscall_print(const char *str) {
 	mr->mr[1] = length;
 	memcpy(&(mr->mr[2]), str, length);
 
-	tag = l4_msgtag(L4_PROTO_LOG, length/sizeof(mr->mr[2]) + 2, 0, 0);
+	tag = l4_msgtag(L4_PROTO_LOG, (length/sizeof(mr->mr[2]) + (length%sizeof(mr->mr[2]) ? 1 : 0)) + 2, 0, 0);
 
 	// syscall
 	ret = l4_ipc_send(env->log, l4_utcb(), tag, L4_IPC_NEVER);
